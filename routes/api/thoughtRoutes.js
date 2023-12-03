@@ -17,7 +17,7 @@ const {
 
 //   /api/thoughts/:thoughtId
   router
-  .route('/:thoughtID')
+  .route('/:thoughtId')
   .get(getThoughtById)
   .put(updateThought)
   .delete(deleteThought);
