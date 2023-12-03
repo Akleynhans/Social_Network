@@ -56,3 +56,22 @@ module.exports = {
             res.status(400).json({ message: error.message });
         }
     },
+
+    async deleteThought(req, res) {
+        try {
+            const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
+            if (!thought) {
+                res.status(404).json({ message: 'None Found' });
+            }
+
+            await User.findOneAndUpdate(
+                { thoughts: req.params.id },
+                { $pull: { thoughts: req.params.id } },
+      
+                { new: true }
+              )
+            res.json({ message: 'Deleted' });
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
