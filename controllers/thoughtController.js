@@ -33,7 +33,7 @@ module.exports = {
                 { $push: { thoughts: thought._id } },
                 { new: true }
             );
-            res.json({message: 'Created!'})
+            res.json(thought)
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
@@ -102,7 +102,7 @@ module.exports = {
             if (!thought) {
                 return res.status(404).json({ message: 'None Found' });
             }
-            res.json(thought);
+            res.json({ message: 'Deleted' });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
