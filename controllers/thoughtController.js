@@ -78,7 +78,7 @@ module.exports = {
 
     async createReaction(req, res) {
         try {
-            const thought = await ThoughtModel.findOneAndUpdate(
+            const thought = await Thought.findOneAndUpdate(
                 req.params.thoughtId,
                 { $set: { reactions: req.body } },
                 { runValidators: true, new: true },
@@ -91,3 +91,20 @@ module.exports = {
             res.status(400).json({ message: error.message });
         }
     },
+
+    async deleteReaction(req, res) {
+        try {
+            const thought = await Thought.findOneAndUpdate(
+                {_id: req.params.thoughtId},
+                { $pull: { reactions: { reactionId: req.params.reactionId } } },
+                { new: true }
+            );
+            if (!thought) {
+                return res.status(404).json({ message: 'None Found' });
+            }
+            res.json(thought);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+}
