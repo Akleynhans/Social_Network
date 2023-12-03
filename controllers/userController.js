@@ -89,3 +89,21 @@ model.exports = {
             res.status(500).json(err);
         }
     },
+
+    async removeFriend(req, res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $pull: { friends: { friendId: req.params.friendId } } },
+                { runValidators: true, new: true }
+            )
+            if (!user) {
+                res.status(404).json({ message: 'None Found' })
+            }
+            res.json({ message: "Removed" });
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
+    }
+};
