@@ -73,4 +73,19 @@ model.exports = {
         }
     },
 
-    
+    async addFriend(req, res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $push: { friends: req.params.friendId } },
+                {runValidators: true, new: true}
+            )
+            if (!user) {
+                res.status(404).json({ message: 'None Found' });
+            }
+            res.json(user)
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
+    },
