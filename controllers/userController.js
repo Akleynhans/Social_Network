@@ -14,3 +14,18 @@ model.exports = {
             console.log('None Found');
         }
     },
+
+    async getSingleUser(req, res) {
+        try {
+            const user = await User.findOne({ _id: req.params.userId })
+                // .populate({ path: 'thoughts', select: '-__v' })
+                .populate({ path: 'friends', select: '-__v' });
+
+            if (!user) {
+                return res.status(404).json({ message: 'None Found' });
+            }
+            res.json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
